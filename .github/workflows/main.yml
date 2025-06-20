@@ -18,10 +18,10 @@ jobs:
         uses: microsoft/setup-msbuild@v2
 
       - name: Restore NuGet packages
-        run: nuget restore YourSolution.sln
+        run: nuget restore DescopeSampleApp.sln
 
       - name: Build Solution
-        run: msbuild YourSolution.sln /p:Configuration=Release
+        run: msbuild DescopeSampleApp.sln /p:Configuration=Release
 
       - name: Zip Build Output
         run: |
