@@ -23,11 +23,13 @@ jobs:
       - name: Build Solution
         run: msbuild DescopeSampleApp.sln /p:Configuration=Release
 
-      - name: Zip Build Output
+      - name: Copy build output to output folder
         run: |
-          mkdir output
-          copy /Y /S ".\YourProject\bin\Release\*" .\output\
-          Compress-Archive -Path .\output\* -DestinationPath output.zip
+          New-Item -ItemType Directory -Path output -Force
+          Copy-Item -Path ".\DescopeSampleApp\bin\Release\*" -Destination .\output -Recurse -Force
+
+      - name: Zip Build Output
+        run: Compress-Archive -Path .\output\* -DestinationPath output.zip
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -55,3 +57,4 @@ jobs:
           port: 5986
           inlineScript: |
             Expand-Archive -Path output.zip -DestinationPath "C:\inetpub\wwwroot" -Force
+            Write-Output "✅ Deployment completed to C:\inetpub\wwwroot"
